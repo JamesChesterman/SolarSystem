@@ -66,6 +66,12 @@ void Window::render() {
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
 
+        //Rendering commands go here
+
+        //Make the screen red.
+        glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT);
+
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
         glfwPollEvents();
