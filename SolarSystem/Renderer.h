@@ -1,7 +1,7 @@
-#ifndef TRIANGLE_H
-#define TRIANGLE_H
+#ifndef RENDERER_H
+#define RENDERER_H
 
-class Triangle {
+class Renderer {
 private:
 	const char* vertexShaderSource;
 	const char* fragmentShaderSource;
@@ -13,8 +13,7 @@ private:
 	char infoLog[512];
 
 public:
-	Triangle();
-	void drawTriangle();
+	Renderer();
 	void makeVAO();
 	void makeVBO();
 	void makeVertexShader();

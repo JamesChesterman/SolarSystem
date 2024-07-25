@@ -5,7 +5,7 @@
 //The include "Window.h" must be below the other includes
 
 #include "Window.h"
-#include "Triangle.h"
+#include "Renderer.h"
 
 
 
@@ -65,8 +65,7 @@ void Window::processInput(GLFWwindow* window) {
 }
 
 void Window::render() {
-    Triangle triangle;
-    triangle.drawTriangle();
+    Renderer renderer;
     //Rendering loop
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
@@ -76,8 +75,8 @@ void Window::render() {
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
 
-        glUseProgram(triangle.getShaderProgram());
-        glBindVertexArray(triangle.getVAO());
+        glUseProgram(renderer.getShaderProgram());
+        glBindVertexArray(renderer.getVAO());
         glDrawArrays(GL_TRIANGLES, 0, 3);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels

@@ -1,10 +1,10 @@
 #include<glad.h>
 #include<GLFW/glfw3.h>
-#include<iostream>
+#include <iostream>
 
-#include "Triangle.h"
+#include "Renderer.h"
 
-Triangle::Triangle() {
+Renderer::Renderer() {
     vertexShaderSource = "#version 330 core\n"
         "layout (location = 0) in vec3 aPos;\n"
         "void main()\n"
@@ -23,12 +23,10 @@ Triangle::Triangle() {
     shaderProgram = 0;
     VAO = 0;
     success = 0;
-}
 
-void Triangle::drawTriangle() {
     //VAO needs to be made before VBO
     makeVAO();
-    
+
     makeVBO();
 
     makeVertexShader();
@@ -38,7 +36,16 @@ void Triangle::drawTriangle() {
     makeLinker();
 }
 
-void Triangle::makeVBO() {
+void Renderer::makeVAO() {
+    //OpenGL requires a VAO. 
+    //Remembers which data goes where. So can easily switch between sets of data for drawing shapes.
+    glGenVertexArrays(1, &VAO);
+
+    glBindVertexArray(VAO);
+
+}
+
+void Renderer::makeVBO() {
     //Vertex coordinates should be in normalised device coordinates
     //This means the x,y,z values should range from -1.0 to 1.0. 
     //Any coords outside this range will be clipped from view.
@@ -68,12 +75,12 @@ void Triangle::makeVBO() {
 }
 
 //Don't need an & here. Int is efficient enough to return by value.
-void Triangle::makeVertexShader() {
+void Renderer::makeVertexShader() {
     vertexShader = glCreateShader(GL_VERTEX_SHADER);
     //Attach shader source code (in vertexShaderSource) to the shader obj
     glShaderSource(vertexShader, 1, &vertexShaderSource, NULL);
     glCompileShader(vertexShader);
-    
+
     //Checks if there are any errors when compiling shader
     glGetShaderiv(vertexShader, GL_COMPILE_STATUS, &success);
     if (!success)
@@ -83,7 +90,7 @@ void Triangle::makeVertexShader() {
     }
 }
 
-void Triangle::makeFragmentShader() {
+void Renderer::makeFragmentShader() {
     fragmentShader = glCreateShader(GL_FRAGMENT_SHADER);
     glShaderSource(fragmentShader, 1, &fragmentShaderSource, NULL);
     glCompileShader(fragmentShader);
@@ -96,7 +103,7 @@ void Triangle::makeFragmentShader() {
     }
 }
 
-void Triangle::makeShaderProgram() {
+void Renderer::makeShaderProgram() {
     //Make a Shader Program object
     //Then activate this shader program when rendering objs.
     //Will link the outputs of each shade to the errors of the next shader
@@ -113,13 +120,13 @@ void Triangle::makeShaderProgram() {
         glGetProgramInfoLog(shaderProgram, 512, NULL, infoLog);
         std::cout << "ERROR::SHADER::PROGRAM::LINKING_FAILED\n" << infoLog << std::endl;
     }
-    
+
     //Delete shader objects once they've been linked.
     glDeleteShader(vertexShader);
     glDeleteShader(fragmentShader);
 }
 
-void Triangle::makeLinker() {
+void Renderer::makeLinker() {
     //Need to specify how OpenGL interprets vertex data before rendering.
     //Each position has 3 values. Each value is 4 bytes. So it's 12 bytes in total.
     //Second arg means there are 3 vals in vertex. Third arg means they're float values.
@@ -128,11 +135,5 @@ void Triangle::makeLinker() {
     glEnableVertexAttribArray(0);
 }
 
-void Triangle::makeVAO() {
-    //OpenGL requires a VAO. 
-    //Remembers which data goes where. So can easily switch between sets of data for drawing shapes.
-    glGenVertexArrays(1, &VAO);
 
-    glBindVertexArray(VAO);
-    
-}
+
