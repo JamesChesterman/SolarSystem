@@ -5,6 +5,9 @@
 //The include "Window.h" must be below the other includes
 
 #include "Window.h"
+#include "Triangle.h"
+
+
 
 void Window::initGLFW() {
     //Initialise GLFW library
@@ -62,15 +65,20 @@ void Window::processInput(GLFWwindow* window) {
 }
 
 void Window::render() {
+    Triangle triangle;
+    triangle.drawTriangle();
     //Rendering loop
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
 
         //Rendering commands go here
 
-        //Make the screen red.
-        glClearColor(1.0f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT);
+
+        glUseProgram(triangle.getShaderProgram());
+        glBindVertexArray(triangle.getVAO());
+        glDrawArrays(GL_TRIANGLES, 0, 3);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
@@ -80,6 +88,8 @@ void Window::render() {
     glfwTerminate();
     std::exit(0);
 }
+
+
 
 int Window::getWindowWidth() const {
     return Window::WINDOWWIDTH;
