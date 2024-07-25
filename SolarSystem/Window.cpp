@@ -45,9 +45,27 @@ Window::Window() {
     Window::initGLAD();
 
     glfwSetFramebufferSizeCallback(window, Window::framebuffer_size_callback);
+    
+    Window::render();
+}
 
+void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
+{
+    glViewport(0, 0, width, height);
+}
+
+void Window::processInput(GLFWwindow* window) {
+    if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
+        //Will close the window on the next iteration of the rendering loop
+        glfwSetWindowShouldClose(window, true);
+    }
+}
+
+void Window::render() {
     //Rendering loop
     while (!glfwWindowShouldClose(window)) {
+        processInput(window);
+
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
         glfwPollEvents();
@@ -55,11 +73,6 @@ Window::Window() {
 
     glfwTerminate();
     std::exit(0);
-}
-
-void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
-{
-    glViewport(0, 0, width, height);
 }
 
 int Window::getWindowWidth() const {

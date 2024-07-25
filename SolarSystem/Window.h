@@ -16,7 +16,9 @@ private:
 
 public:
 	Window();
+	void render();
 	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
+	void processInput(GLFWwindow* window);
 	int getWindowWidth() const;
 	int getWindowHeight() const;
 };
