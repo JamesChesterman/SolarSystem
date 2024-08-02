@@ -1,11 +1,13 @@
 #include<glad.h>
 #include<GLFW/glfw3.h>
 #include<iostream>
+#include <glm.hpp>
+#include <gtc/matrix_transform.hpp>
+#include <gtc/type_ptr.hpp>
 
 //The include "Window.h" must be below the other includes
-
 #include "Window.h"
-#include "Renderer.h"
+#include "Sphere.h"
 
 
 
@@ -43,13 +45,13 @@ bool Window::initGLAD() {
 }
 
 Window::Window() {
-    Window::initGLFW();
-    Window::createWindow();
-    Window::initGLAD();
+    initGLFW();
+    createWindow();
+    initGLAD();
 
     glfwSetFramebufferSizeCallback(window, Window::framebuffer_size_callback);
     
-    Window::render();
+    render();
 }
 
 void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height)
@@ -65,7 +67,19 @@ void Window::processInput(GLFWwindow* window) {
 }
 
 void Window::render() {
-    Renderer renderer;
+    Sphere sphere;
+
+    std::vector<float> vertices;
+    std::vector<unsigned int> indices;
+    sphere.generateSphere(vertices, indices, 20, 20, 1.0f);
+    sphere.setupBuffers(vertices, indices);
+
+    glUseProgram(sphere.getShaderProgram());
+        
+    setupUniforms(sphere);
+
+    glEnable(GL_DEPTH_TEST);
+
     //Rendering loop
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
@@ -73,11 +87,11 @@ void Window::render() {
         //Rendering commands go here
 
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        glUseProgram(renderer.getShaderProgram());
-        glBindVertexArray(renderer.getVAO());
-        glDrawArrays(GL_TRIANGLES, 0, 3);
+
+        glBindVertexArray(sphere.getVAO());
+        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
@@ -86,6 +100,33 @@ void Window::render() {
 
     glfwTerminate();
     std::exit(0);
+}
+
+void Window::setupUniforms(Sphere& sphere) {
+    //Set up uniform values for model, view, projection matrices
+    //Also lighting parameters.
+    glm::mat4 model = glm::mat4(1.0f);
+    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WINDOWWIDTH / (float)WINDOWHEIGHT, 0.1f, 100.0f);
+    
+    //These are all attributes in the glsl shader source (in Sphere.cpp)
+    unsigned int modelLoc = glGetUniformLocation(sphere.getShaderProgram(), "model");
+    unsigned int viewLoc = glGetUniformLocation(sphere.getShaderProgram(), "view");
+    unsigned int projLoc = glGetUniformLocation(sphere.getShaderProgram(), "projection");
+    unsigned int colorLoc = glGetUniformLocation(sphere.getShaderProgram(), "objectColor");
+    unsigned int lightPosLoc = glGetUniformLocation(sphere.getShaderProgram(), "lightPos");
+    unsigned int lightColorLoc = glGetUniformLocation(sphere.getShaderProgram(), "lightColor");
+    unsigned int viewPosLoc = glGetUniformLocation(sphere.getShaderProgram(), "viewPos");
+
+    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
+    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
+    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
+
+    glUniform3f(colorLoc, 1.0f, 0.0f, 0.0f);
+
+    glUniform3f(lightPosLoc, 1.0f, 1.0f, 1.0f);  // Position of the light source
+    glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);   // Camera/view position
+    glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // White light
 }
 
 
