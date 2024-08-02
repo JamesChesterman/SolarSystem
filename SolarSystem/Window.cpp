@@ -1,9 +1,6 @@
 #include<glad.h>
 #include<GLFW/glfw3.h>
 #include<iostream>
-#include <glm.hpp>
-#include <gtc/matrix_transform.hpp>
-#include <gtc/type_ptr.hpp>
 
 //The include "Window.h" must be below the other includes
 #include "Window.h"
@@ -71,12 +68,12 @@ void Window::render() {
 
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
-    sphere.generateSphere(vertices, indices, 20, 20, 1.0f);
+    sphere.generateSphere(vertices, indices, 20, 20, 0.5f);
     sphere.setupBuffers(vertices, indices);
 
     glUseProgram(sphere.getShaderProgram());
         
-    setupUniforms(sphere);
+    sphere.setupUniforms();
 
     glEnable(GL_DEPTH_TEST);
 
@@ -102,40 +99,13 @@ void Window::render() {
     std::exit(0);
 }
 
-void Window::setupUniforms(Sphere& sphere) {
-    //Set up uniform values for model, view, projection matrices
-    //Also lighting parameters.
-    glm::mat4 model = glm::mat4(1.0f);
-    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)WINDOWWIDTH / (float)WINDOWHEIGHT, 0.1f, 100.0f);
-    
-    //These are all attributes in the glsl shader source (in Sphere.cpp)
-    unsigned int modelLoc = glGetUniformLocation(sphere.getShaderProgram(), "model");
-    unsigned int viewLoc = glGetUniformLocation(sphere.getShaderProgram(), "view");
-    unsigned int projLoc = glGetUniformLocation(sphere.getShaderProgram(), "projection");
-    unsigned int colorLoc = glGetUniformLocation(sphere.getShaderProgram(), "objectColor");
-    unsigned int lightPosLoc = glGetUniformLocation(sphere.getShaderProgram(), "lightPos");
-    unsigned int lightColorLoc = glGetUniformLocation(sphere.getShaderProgram(), "lightColor");
-    unsigned int viewPosLoc = glGetUniformLocation(sphere.getShaderProgram(), "viewPos");
 
-    glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
-    glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
-    glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-    glUniform3f(colorLoc, 1.0f, 0.0f, 0.0f);
-
-    glUniform3f(lightPosLoc, 1.0f, 1.0f, 1.0f);  // Position of the light source
-    glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);   // Camera/view position
-    glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // White light
+int Window::getWindowWidth(){
+    return WINDOWWIDTH;
 }
 
-
-
-int Window::getWindowWidth() const {
-    return Window::WINDOWWIDTH;
-}
-
-int Window::getWindowHeight() const {
-    return Window::WINDOWHEIGHT;
+int Window::getWindowHeight(){
+    return WINDOWHEIGHT;
 }
 

@@ -17,6 +17,7 @@ public:
 	Sphere();
 	void generateSphere(std::vector<float>& vertices, std::vector<unsigned int>& indices, unsigned int latDivisions, unsigned int longDivisions, float radius);
 	void setupBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
+	void setupUniforms();
 	//Getter methods are here to improve performance
 	unsigned int getShaderProgram() const { return shaderProgram; }
 	unsigned int getVAO() const { return VAO; }
