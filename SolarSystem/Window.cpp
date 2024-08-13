@@ -65,15 +65,18 @@ void Window::processInput(GLFWwindow* window) {
 
 void Window::render() {
     Sphere sphere;
-
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
     sphere.generateSphere(vertices, indices, 20, 20, 0.5f);
     sphere.setupBuffers(vertices, indices);
 
+    Sphere sphere2;
+    std::vector<float> vertices2;
+    std::vector<unsigned int> indices2;
+    sphere2.generateSphere(vertices2, indices2, 20, 20, 0.5f);
+    sphere2.setupBuffers(vertices2, indices2);
+
     glUseProgram(sphere.getShaderProgram());
-        
-    sphere.setupUniforms();
 
     glEnable(GL_DEPTH_TEST);
 
@@ -89,15 +92,20 @@ void Window::render() {
         lastFrame = currentFrame;
 
         sphere.translate(0.1f, 0.1f, 0.1f, deltaTime);
+        sphere2.translate(-0.1f, -0.1f, 0.1f, deltaTime);
 
         //Rendering commands go here
 
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-
+        sphere.setupUniforms();
         glBindVertexArray(sphere.getVAO());
         glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+
+        sphere2.setupUniforms();
+        glBindVertexArray(sphere2.getVAO());
+        glDrawElements(GL_TRIANGLES, indices2.size(), GL_UNSIGNED_INT, 0);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
