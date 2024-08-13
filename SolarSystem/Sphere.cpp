@@ -89,6 +89,9 @@ Sphere::Sphere() {
             FragColor = vec4(result, 1.0);
         }
     )";
+    x = 0;
+    y = 0;
+    z = -2;
     makeShaderProgram();
 }
 
@@ -184,6 +187,8 @@ void Sphere::setupUniforms() {
     //Set up uniform values for model, view, projection matrices
     //Also lighting parameters.
     glm::mat4 model = glm::mat4(1.0f);
+    model = glm::translate(model, glm::vec3(x, y, z));
+
     glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)Window::getWindowWidth() / (float)Window::getWindowHeight(), 0.1f, 100.0f);
 
@@ -206,6 +211,13 @@ void Sphere::setupUniforms() {
     glUniform3f(lightPosLoc, 1.0f, 1.0f, 1.0f);  // Position of the light source
     glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);   // Camera/view position
     glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // White light
+}
+
+void Sphere::translate(float dx, float dy, float dz, float deltaTime) {
+    x += (dx * deltaTime);
+    y += (dy * deltaTime);
+    z += (dz * deltaTime);
+    setupUniforms();
 }
 
 

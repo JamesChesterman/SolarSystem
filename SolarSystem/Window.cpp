@@ -77,9 +77,18 @@ void Window::render() {
 
     glEnable(GL_DEPTH_TEST);
 
+    float deltaTime = 0;
+    float lastFrame = 0;
+
     //Rendering loop
     while (!glfwWindowShouldClose(window)) {
         processInput(window);
+
+        float currentFrame = glfwGetTime();
+        deltaTime = currentFrame - lastFrame;
+        lastFrame = currentFrame;
+
+        sphere.translate(0.1f, 0.1f, 0.1f, deltaTime);
 
         //Rendering commands go here
 

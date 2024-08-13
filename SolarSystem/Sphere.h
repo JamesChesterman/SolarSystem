@@ -13,11 +13,13 @@ private:
 	unsigned int VAO, VBO, EBO;
 	void makeShaderProgram();
 	unsigned int compileShader(unsigned int type, const char* source);
+	float x, y, z;
 public:
 	Sphere();
 	void generateSphere(std::vector<float>& vertices, std::vector<unsigned int>& indices, unsigned int latDivisions, unsigned int longDivisions, float radius);
 	void setupBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
 	void setupUniforms();
+	void translate(float dx, float dy, float dz, float deltaTime);
 	//Getter methods are here to improve performance
 	unsigned int getShaderProgram() const { return shaderProgram; }
 	unsigned int getVAO() const { return VAO; }
