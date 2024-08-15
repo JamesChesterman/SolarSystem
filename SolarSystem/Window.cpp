@@ -64,7 +64,7 @@ void Window::processInput(GLFWwindow* window) {
 }
 
 void Window::render() {
-    Sphere sphere(0, 0, -2, 1);
+    Sphere sphere(0, 0, 0, 1);
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
     sphere.generateSphere(vertices, indices, 20, 20, 0.5f);
@@ -91,7 +91,6 @@ void Window::render() {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        sphere.translate(0.1f, 0.1f, 0.1f, deltaTime);
         sphere2.translate(-0.1f, -0.1f, 0.1f, deltaTime);
 
         //Rendering commands go here

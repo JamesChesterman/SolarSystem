@@ -191,7 +191,10 @@ void Sphere::setupUniforms() {
     glm::mat4 model = glm::mat4(1.0f);
     model = glm::translate(model, glm::vec3(x, y, z));
 
-    glm::mat4 view = glm::lookAt(glm::vec3(0.0f, 0.0f, 3.0f), glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f));
+    glm::mat4 view = glm::lookAt(
+        glm::vec3(0.0f, 10.0f, 0.0f),    //Camera pos
+        glm::vec3(0.0f, 0.0f, 0.0f),    //Look at pos
+        glm::vec3(0.0f, 0.0f, -1.0f));  //Up direction
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)Window::getWindowWidth() / (float)Window::getWindowHeight(), 0.1f, 100.0f);
 
     //These are all attributes in the glsl shader source (in Sphere.cpp)
@@ -210,7 +213,7 @@ void Sphere::setupUniforms() {
 
     glUniform3f(colorLoc, 1.0f, 0.0f, 0.0f);
 
-    glUniform3f(lightPosLoc, 1.0f, 1.0f, 1.0f);  // Position of the light source
+    glUniform3f(lightPosLoc, 0.0f, 0.0f, 0.0f);  // Position of the light source
     glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);   // Camera/view position
     glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // White light
 }
