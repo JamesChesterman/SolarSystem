@@ -20,8 +20,10 @@ private:
 	unsigned int VAO, VBO, EBO;
 	void makeShaderProgram();
 	unsigned int compileShader(unsigned int type, const char* source);
-	float x, y, z, massKg;
+	float massKg;
 	Color color;
+protected:
+	float x, y, z;
 public:
 	//Not used initialiser list here so that other things can happen in the constructor
 	Sphere(float x = 0, float y = 0, float z = 0, float massKg = 0);
@@ -29,6 +31,7 @@ public:
 	void setupBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
 	void setupUniforms();
 	void translate(float dx, float dy, float dz, float deltaTime);
+	void moveTo(float newX, float newY, float newZ);
 	//Getter methods are here to improve performance
 	unsigned int getShaderProgram() const { return shaderProgram; }
 	unsigned int getVAO() const { return VAO; }

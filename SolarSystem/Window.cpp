@@ -5,6 +5,7 @@
 //The include "Window.h" must be below the other includes
 #include "Window.h"
 #include "Sphere.h"
+#include "Satellite.h"
 
 
 
@@ -66,13 +67,16 @@ void Window::processInput(GLFWwindow* window) {
 void Window::render() {
     //Setup bodies:
     Sphere sun(0, 0, 0, 1);
+    sun.setColor(1.0f, 0.65f, 0.0f);     //Orange
     std::vector<float> verticesSun;
     std::vector<unsigned int> indicesSun;
     //Sun's radius is 109x that of earth
     sun.generateSphere(verticesSun, indicesSun, 20, 20, 10.9f);
     sun.setupBuffers(verticesSun, indicesSun);
 
-    Sphere earth(0, 0, -2, 1);
+    Satellite earth(0, 0, -75, 1);
+    earth.setColor(0.0f, 0.0f, 0.9f);
+    earth.setOrbitParams(0.0f, 0.0f, 0.0f, 75.0f, 1.0f);
     std::vector<float> verticesEarth;
     std::vector<unsigned int> indicesEarth;
     earth.generateSphere(verticesEarth, indicesEarth, 20, 20, 1.0f);
@@ -94,7 +98,7 @@ void Window::render() {
         lastFrame = currentFrame;
 
         //Bodies in Motion:
-        earth.translate(-1.0f, -1.0f, 0.1f, deltaTime);
+        earth.updateOrbit(deltaTime);
 
         //Rendering commands go here
 
@@ -102,12 +106,10 @@ void Window::render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //All bodies:
-        sun.setColor(1.0f, 0.65f, 0.0f);     //Orange
         sun.setupUniforms();
         glBindVertexArray(sun.getVAO());
         glDrawElements(GL_TRIANGLES, indicesSun.size(), GL_UNSIGNED_INT, 0);
 
-        earth.setColor(0.0f, 0.0f, 0.9f);
         earth.setupUniforms();
         glBindVertexArray(earth.getVAO());
         glDrawElements(GL_TRIANGLES, indicesEarth.size(), GL_UNSIGNED_INT, 0);
