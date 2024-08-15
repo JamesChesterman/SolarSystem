@@ -194,9 +194,9 @@ void Sphere::setupUniforms() {
     glm::mat4 view = glm::lookAt(
         glm::vec3(0.0f, 200.0f, 0.0f),    //Camera pos
         glm::vec3(0.0f, 0.0f, 0.0f),    //Look at pos
-        glm::vec3(0.0f, 0.0f, 1.0f));  //Up direction
+        glm::vec3(0.0f, 0.0f, -1.0f));  //Up direction
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)Window::getWindowWidth() / (float)Window::getWindowHeight(), 0.1f, 300.0f);
-
+    
     //These are all attributes in the glsl shader source (in Sphere.cpp)
     unsigned int modelLoc = glGetUniformLocation(shaderProgram, "model");
     unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");

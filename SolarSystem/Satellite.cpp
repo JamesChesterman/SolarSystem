@@ -16,8 +16,9 @@ void Satellite::setOrbitParams(float cx, float cy, float cz, float r, float as) 
 void Satellite::updateOrbit(float deltaTime) {
 	currentAngle += angularSpeed * deltaTime;
 
+	//Need to change the z not the y because y is up and down.
 	x = centreX + radius * cos(currentAngle);
-	y = centreY + radius * sin(currentAngle);
+	z = centreZ + radius * sin(currentAngle);
 
-	moveTo(x, y, centreZ);
+	moveTo(x, centreY, z);
 }
