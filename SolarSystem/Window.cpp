@@ -64,19 +64,21 @@ void Window::processInput(GLFWwindow* window) {
 }
 
 void Window::render() {
-    Sphere sphere(0, 0, 0, 1);
-    std::vector<float> vertices;
-    std::vector<unsigned int> indices;
-    sphere.generateSphere(vertices, indices, 20, 20, 0.5f);
-    sphere.setupBuffers(vertices, indices);
+    //Setup bodies:
+    Sphere sun(0, 0, 0, 1);
+    std::vector<float> verticesSun;
+    std::vector<unsigned int> indicesSun;
+    //Sun's radius is 109x that of earth
+    sun.generateSphere(verticesSun, indicesSun, 20, 20, 10.9f);
+    sun.setupBuffers(verticesSun, indicesSun);
 
-    Sphere sphere2(0, 0, -2, 1);
-    std::vector<float> vertices2;
-    std::vector<unsigned int> indices2;
-    sphere2.generateSphere(vertices2, indices2, 20, 20, 0.5f);
-    sphere2.setupBuffers(vertices2, indices2);
+    Sphere earth(0, 0, -2, 1);
+    std::vector<float> verticesEarth;
+    std::vector<unsigned int> indicesEarth;
+    earth.generateSphere(verticesEarth, indicesEarth, 20, 20, 1.0f);
+    earth.setupBuffers(verticesEarth, indicesEarth);
 
-    glUseProgram(sphere.getShaderProgram());
+    glUseProgram(sun.getShaderProgram());
 
     glEnable(GL_DEPTH_TEST);
 
@@ -91,20 +93,22 @@ void Window::render() {
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
 
-        sphere2.translate(-0.1f, -0.1f, 0.1f, deltaTime);
+        //Bodies in Motion:
+        earth.translate(-1.0f, -1.0f, 0.1f, deltaTime);
 
         //Rendering commands go here
 
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        sphere.setupUniforms();
-        glBindVertexArray(sphere.getVAO());
-        glDrawElements(GL_TRIANGLES, indices.size(), GL_UNSIGNED_INT, 0);
+        //All bodies:
+        sun.setupUniforms();
+        glBindVertexArray(sun.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesSun.size(), GL_UNSIGNED_INT, 0);
 
-        sphere2.setupUniforms();
-        glBindVertexArray(sphere2.getVAO());
-        glDrawElements(GL_TRIANGLES, indices2.size(), GL_UNSIGNED_INT, 0);
+        earth.setupUniforms();
+        glBindVertexArray(earth.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesEarth.size(), GL_UNSIGNED_INT, 0);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
