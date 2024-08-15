@@ -102,10 +102,12 @@ void Window::render() {
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         //All bodies:
+        sun.setColor(1.0f, 0.65f, 0.0f);     //Orange
         sun.setupUniforms();
         glBindVertexArray(sun.getVAO());
         glDrawElements(GL_TRIANGLES, indicesSun.size(), GL_UNSIGNED_INT, 0);
 
+        earth.setColor(0.0f, 0.0f, 0.9f);
         earth.setupUniforms();
         glBindVertexArray(earth.getVAO());
         glDrawElements(GL_TRIANGLES, indicesEarth.size(), GL_UNSIGNED_INT, 0);

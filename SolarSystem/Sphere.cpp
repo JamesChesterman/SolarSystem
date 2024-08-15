@@ -211,7 +211,7 @@ void Sphere::setupUniforms() {
     glUniformMatrix4fv(viewLoc, 1, GL_FALSE, glm::value_ptr(view));
     glUniformMatrix4fv(projLoc, 1, GL_FALSE, glm::value_ptr(projection));
 
-    glUniform3f(colorLoc, 1.0f, 0.0f, 0.0f);
+    glUniform3f(colorLoc, color.r, color.g, color.b);
 
     glUniform3f(lightPosLoc, 0.0f, 0.0f, 0.0f);  // Position of the light source
     glUniform3f(viewPosLoc, 0.0f, 0.0f, 5.0f);   // Camera/view position
@@ -223,6 +223,13 @@ void Sphere::translate(float dx, float dy, float dz, float deltaTime) {
     y += (dy * deltaTime);
     z += (dz * deltaTime);
     setupUniforms();
+}
+
+
+void Sphere::setColor(float r, float g, float b) {
+    color.r = r;
+    color.g = g;
+    color.b = b;
 }
 
 
