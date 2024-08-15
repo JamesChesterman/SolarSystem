@@ -37,7 +37,7 @@ void Sphere::setupBuffers(const std::vector<float>& vertices, const std::vector<
     glBindVertexArray(0); // Unbind VAO
 }
 
-Sphere::Sphere() {
+Sphere::Sphere(float x, float y, float z, float massKg) {
     //Shader source code is AI Generated.
     vertexShaderSource = R"(
         #version 330 core
@@ -89,9 +89,11 @@ Sphere::Sphere() {
             FragColor = vec4(result, 1.0);
         }
     )";
-    x = 0;
-    y = 0;
-    z = -2;
+    this->x = x;
+    this->y = y;
+    this->z = z;
+    this->massKg = massKg;
+
     makeShaderProgram();
 }
 
@@ -219,5 +221,7 @@ void Sphere::translate(float dx, float dy, float dz, float deltaTime) {
     z += (dz * deltaTime);
     setupUniforms();
 }
+
+
 
 

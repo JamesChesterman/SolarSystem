@@ -64,13 +64,13 @@ void Window::processInput(GLFWwindow* window) {
 }
 
 void Window::render() {
-    Sphere sphere;
+    Sphere sphere(0, 0, -2, 1);
     std::vector<float> vertices;
     std::vector<unsigned int> indices;
     sphere.generateSphere(vertices, indices, 20, 20, 0.5f);
     sphere.setupBuffers(vertices, indices);
 
-    Sphere sphere2;
+    Sphere sphere2(0, 0, -2, 1);
     std::vector<float> vertices2;
     std::vector<unsigned int> indices2;
     sphere2.generateSphere(vertices2, indices2, 20, 20, 0.5f);

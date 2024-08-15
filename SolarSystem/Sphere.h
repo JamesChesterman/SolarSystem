@@ -13,9 +13,10 @@ private:
 	unsigned int VAO, VBO, EBO;
 	void makeShaderProgram();
 	unsigned int compileShader(unsigned int type, const char* source);
-	float x, y, z;
+	float x, y, z, massKg;
 public:
-	Sphere();
+	//Not used initialiser list here so that other things can happen in the constructor
+	Sphere(float x = 0, float y = 0, float z = 0, float massKg = 0);
 	void generateSphere(std::vector<float>& vertices, std::vector<unsigned int>& indices, unsigned int latDivisions, unsigned int longDivisions, float radius);
 	void setupBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
 	void setupUniforms();
