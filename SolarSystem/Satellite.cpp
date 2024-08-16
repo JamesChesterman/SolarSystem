@@ -22,3 +22,9 @@ void Satellite::updateOrbit(float deltaTime) {
 
 	moveTo(x, centreY, z);
 }
+
+void Satellite::setCentrePos(float cx, float cy, float cz) {
+	centreX = cx;
+	centreY = cy;
+	centreZ = cz;
+}

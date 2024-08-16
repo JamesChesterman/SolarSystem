@@ -75,12 +75,21 @@ void Window::render() {
     sun.setupBuffers(verticesSun, indicesSun);
 
     Satellite earth(0, 0, -75, 1);
-    earth.setColor(0.0f, 0.0f, 0.9f);
+    earth.setColor(0, 0, 0.9f);
     earth.setOrbitParams(0.0f, 0.0f, 0.0f, 75.0f, 1.0f);
     std::vector<float> verticesEarth;
     std::vector<unsigned int> indicesEarth;
     earth.generateSphere(verticesEarth, indicesEarth, 20, 20, 1.0f);
     earth.setupBuffers(verticesEarth, indicesEarth);
+
+    Satellite moon(0, 0, -85, 1);
+    moon.setColor(0, 0, 0);
+    moon.setOrbitParams(earth.getX(), earth.getY(), earth.getZ(), 10, 2);
+    std::vector<float> verticesMoon;
+    std::vector<unsigned int> indicesMoon;
+    moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 0.5f);
+    moon.setupBuffers(verticesMoon, indicesMoon);
+
 
     glUseProgram(sun.getShaderProgram());
 
@@ -99,6 +108,8 @@ void Window::render() {
 
         //Bodies in Motion:
         earth.updateOrbit(deltaTime);
+        moon.setCentrePos(earth.getX(), earth.getY(), earth.getZ());
+        moon.updateOrbit(deltaTime);
 
         //Rendering commands go here
 
@@ -113,6 +124,10 @@ void Window::render() {
         earth.setupUniforms();
         glBindVertexArray(earth.getVAO());
         glDrawElements(GL_TRIANGLES, indicesEarth.size(), GL_UNSIGNED_INT, 0);
+
+        moon.setupUniforms();
+        glBindVertexArray(moon.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesMoon.size(), GL_UNSIGNED_INT, 0);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);

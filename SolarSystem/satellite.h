@@ -12,6 +12,7 @@ public:
 	using Sphere::Sphere;
 	void setOrbitParams(float cx, float cy, float cz, float r, float as);
 	void updateOrbit(float deltaTime);
+	void setCentrePos(float cx, float cy, float cz);
 };
 
 #endif

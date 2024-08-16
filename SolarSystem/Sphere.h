@@ -10,6 +10,8 @@ struct Color {
 	Color(float r = 1.0f, float g = 1.0f, float b = 1.0f) : r(r), g(g), b(b) {};
 };
 
+
+
 class Sphere {
 private:
 	const char* vertexShaderSource;
@@ -35,6 +37,9 @@ public:
 	//Getter methods are here to improve performance
 	unsigned int getShaderProgram() const { return shaderProgram; }
 	unsigned int getVAO() const { return VAO; }
+	float getX() const { return x; }
+	float getY() const { return y; }
+	float getZ() const { return z; }
 	//Setter methods:
 	void setColor(float r, float g, float b);
 };
