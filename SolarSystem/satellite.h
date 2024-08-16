@@ -5,14 +5,14 @@
 
 class Satellite : public Sphere {
 private:
-	float centreX, centreY, centreZ, radius, angularSpeed, currentAngle;
-
+	float radius, angularSpeed, currentAngle;
+	Vector3 centrePos;
 public:
 	//Inherits constructors from Sphere class
 	using Sphere::Sphere;
-	void setOrbitParams(float cx, float cy, float cz, float r, float as);
+	void setOrbitParams(Vector3 cPos, float r, float as);
 	void updateOrbit(float deltaTime);
-	void setCentrePos(float cx, float cy, float cz);
+	void setCentrePos(Vector3 cPos);
 };
 
 #endif

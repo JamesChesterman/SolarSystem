@@ -76,7 +76,7 @@ void Window::render() {
 
     Satellite earth(0, 0, -75, 1);
     earth.setColor(0, 0, 0.9f);
-    earth.setOrbitParams(0.0f, 0.0f, 0.0f, 75.0f, 1.0f);
+    earth.setOrbitParams(Vector3 {0, 0, 0}, 75.0f, 1.0f);
     std::vector<float> verticesEarth;
     std::vector<unsigned int> indicesEarth;
     earth.generateSphere(verticesEarth, indicesEarth, 20, 20, 1.0f);
@@ -84,7 +84,7 @@ void Window::render() {
 
     Satellite moon(0, 0, -85, 1);
     moon.setColor(0, 0, 0);
-    moon.setOrbitParams(earth.getX(), earth.getY(), earth.getZ(), 10, 2);
+    moon.setOrbitParams(earth.getPos(), 10, 2);
     std::vector<float> verticesMoon;
     std::vector<unsigned int> indicesMoon;
     moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 0.5f);
@@ -108,7 +108,7 @@ void Window::render() {
 
         //Bodies in Motion:
         earth.updateOrbit(deltaTime);
-        moon.setCentrePos(earth.getX(), earth.getY(), earth.getZ());
+        moon.setCentrePos(earth.getPos());
         moon.updateOrbit(deltaTime);
 
         //Rendering commands go here

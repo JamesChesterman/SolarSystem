@@ -5,12 +5,11 @@
 
 struct Color {
 	float r, g, b;
-
-	//Constructor to avoid any errors
-	Color(float r = 1.0f, float g = 1.0f, float b = 1.0f) : r(r), g(g), b(b) {};
 };
 
-
+struct Vector3 {
+	float x, y, z;
+};
 
 class Sphere {
 private:
@@ -25,7 +24,7 @@ private:
 	float massKg;
 	Color color;
 protected:
-	float x, y, z;
+	Vector3 pos;
 public:
 	//Not used initialiser list here so that other things can happen in the constructor
 	Sphere(float x = 0, float y = 0, float z = 0, float massKg = 0);
@@ -37,9 +36,7 @@ public:
 	//Getter methods are here to improve performance
 	unsigned int getShaderProgram() const { return shaderProgram; }
 	unsigned int getVAO() const { return VAO; }
-	float getX() const { return x; }
-	float getY() const { return y; }
-	float getZ() const { return z; }
+	Vector3 getPos() const { return pos; }
 	//Setter methods:
 	void setColor(float r, float g, float b);
 };

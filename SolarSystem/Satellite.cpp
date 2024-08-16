@@ -3,10 +3,8 @@
 #include "Satellite.h"
 
 
-void Satellite::setOrbitParams(float cx, float cy, float cz, float r, float as) {
-	centreX = cx;
-	centreY = cy;
-	centreZ = cz;
+void Satellite::setOrbitParams(Vector3 cPos, float r, float as) {
+	centrePos = cPos;
 	radius = r;
 	//This is in radians per second
 	angularSpeed = as;
@@ -17,14 +15,12 @@ void Satellite::updateOrbit(float deltaTime) {
 	currentAngle += angularSpeed * deltaTime;
 
 	//Need to change the z not the y because y is up and down.
-	x = centreX + radius * cos(currentAngle);
-	z = centreZ + radius * sin(currentAngle);
+	pos.x = centrePos.x + radius * cos(currentAngle);
+	pos.z = centrePos.z + radius * sin(currentAngle);
 
-	moveTo(x, centreY, z);
+	moveTo(pos.x, centrePos.y, pos.z);
 }
 
-void Satellite::setCentrePos(float cx, float cy, float cz) {
-	centreX = cx;
-	centreY = cy;
-	centreZ = cz;
+void Satellite::setCentrePos(Vector3 cPos) {
+	centrePos = cPos;
 }

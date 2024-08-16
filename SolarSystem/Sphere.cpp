@@ -89,9 +89,7 @@ Sphere::Sphere(float x, float y, float z, float massKg) {
             FragColor = vec4(result, 1.0);
         }
     )";
-    this->x = x;
-    this->y = y;
-    this->z = z;
+    pos = { x, y, z };
     this->massKg = massKg;
 
     makeShaderProgram();
@@ -189,7 +187,7 @@ void Sphere::setupUniforms() {
     //Set up uniform values for model, view, projection matrices
     //Also lighting parameters.
     glm::mat4 model = glm::mat4(1.0f);
-    model = glm::translate(model, glm::vec3(x, y, z));
+    model = glm::translate(model, glm::vec3(pos.x, pos.y, pos.z));
 
     glm::mat4 view = glm::lookAt(
         glm::vec3(0.0f, 200.0f, 0.0f),    //Camera pos
@@ -220,23 +218,19 @@ void Sphere::setupUniforms() {
 
 //Keeping this method in case I might use it in the future.
 void Sphere::translate(float dx, float dy, float dz, float deltaTime) {
-    x += (dx * deltaTime);
-    y += (dy * deltaTime);
-    z += (dz * deltaTime);
+    pos.x += (dx * deltaTime);
+    pos.y += (dy * deltaTime);
+    pos.z += (dz * deltaTime);
     setupUniforms();
 }
 
 void Sphere::moveTo(float newX, float newY, float newZ) {
-    x = newX;
-    y = newY;
-    z = newZ;
+    pos = { newX, newY, newZ };
 }
 
 
 void Sphere::setColor(float r, float g, float b) {
-    color.r = r;
-    color.g = g;
-    color.b = b;
+    color = { r, g, b };
 }
 
 
