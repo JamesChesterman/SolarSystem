@@ -224,10 +224,6 @@ void Sphere::translate(float dx, float dy, float dz, float deltaTime) {
     setupUniforms();
 }
 
-void Sphere::moveTo(float newX, float newY, float newZ) {
-    pos = { newX, newY, newZ };
-}
-
 
 void Sphere::setColor(float r, float g, float b) {
     color = { r, g, b };
