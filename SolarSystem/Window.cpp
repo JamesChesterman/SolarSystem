@@ -46,7 +46,7 @@ Window::Window() {
     initGLFW();
     createWindow();
     initGLAD();
-    cameraPos = { 0,200,0 };
+    cameraPos = { 100,400,100 };
 
     glfwSetFramebufferSizeCallback(window, Window::framebuffer_size_callback);
     render();
@@ -57,15 +57,31 @@ void Window::framebuffer_size_callback(GLFWwindow* window, int width, int height
     glViewport(0, 0, width, height);
 }
 
-void Window::processInput(GLFWwindow* window) {
+void Window::processInput(GLFWwindow* window, float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) {
         //Will close the window on the next iteration of the rendering loop
         glfwSetWindowShouldClose(window, true);
     }
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-
+        cameraPos.y -= cameraSpeed * deltaTime;
     }
+    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
+        cameraPos.y += cameraSpeed * deltaTime;
+    }
+    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+        cameraPos.x -= cameraSpeed * deltaTime;
+    }
+    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+        cameraPos.x += cameraSpeed * deltaTime;
+    }
+    if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
+        cameraPos.z += cameraSpeed * deltaTime;
+    }
+    if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
+        cameraPos.z -= cameraSpeed * deltaTime;
+    }
+
 }
 
 //Tried to make this stuff more efficient.
@@ -109,11 +125,10 @@ void Window::render() {
 
     //Rendering loop
     while (!glfwWindowShouldClose(window)) {
-        processInput(window);
-
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
+        processInput(window, deltaTime);
 
         //Bodies in Motion:
         earth.updateOrbit(deltaTime);

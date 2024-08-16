@@ -10,13 +10,14 @@ private:
 	GLFWwindow* window;
 	static const int WINDOWWIDTH = 1200;
 	static const int WINDOWHEIGHT = 800;
+	const float cameraSpeed = 200;
 	void initGLFW();
 	bool createWindow();
 	bool initGLAD();
 	Vector3 cameraPos;
 public:
 	Window();
-	void processInput(GLFWwindow* window);
+	void processInput(GLFWwindow* window, float deltaTime);
 	static void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 	void render();
 	static int getWindowWidth();
