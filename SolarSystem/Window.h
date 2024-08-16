@@ -13,7 +13,7 @@ private:
 	void initGLFW();
 	bool createWindow();
 	bool initGLAD();
-
+	Vector3 cameraPos;
 public:
 	Window();
 	void processInput(GLFWwindow* window);

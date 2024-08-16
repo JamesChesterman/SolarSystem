@@ -32,7 +32,6 @@ public:
 	void setupBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
 	void setupUniforms();
 	void translate(float dx, float dy, float dz, float deltaTime);
-	void moveTo(float newX, float newY, float newZ);
 	//Getter methods are here to improve performance
 	unsigned int getShaderProgram() const { return shaderProgram; }
 	unsigned int getVAO() const { return VAO; }

@@ -6,7 +6,7 @@
 #include "Window.h"
 #include "Sphere.h"
 #include "Satellite.h"
-
+#include "Camera.h"
 
 
 void Window::initGLFW() {
@@ -46,9 +46,9 @@ Window::Window() {
     initGLFW();
     createWindow();
     initGLAD();
+    cameraPos = { 0,200,0 };
 
     glfwSetFramebufferSizeCallback(window, Window::framebuffer_size_callback);
-    
     render();
 }
 
@@ -62,8 +62,16 @@ void Window::processInput(GLFWwindow* window) {
         //Will close the window on the next iteration of the rendering loop
         glfwSetWindowShouldClose(window, true);
     }
+
+    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
+
+    }
 }
 
+//Tried to make this stuff more efficient.
+//Don't try to make Sphere sun, Satellite earth etc into member variables
+//Because otherwise their constructors will be called (in the header files)
+//So OpenGL will try to do the stuff in Sphere without having been initialised (here)
 void Window::render() {
     //Setup bodies:
     Sphere sun(0, 0, 0, 1);
@@ -90,6 +98,7 @@ void Window::render() {
     moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 0.5f);
     moon.setupBuffers(verticesMoon, indicesMoon);
 
+    Camera camera;
 
     glUseProgram(sun.getShaderProgram());
 
@@ -115,6 +124,8 @@ void Window::render() {
 
         glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        camera.setCameraPos(cameraPos, sun);
 
         //All bodies:
         sun.setupUniforms();
