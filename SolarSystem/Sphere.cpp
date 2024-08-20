@@ -69,24 +69,30 @@ Sphere::Sphere(float x, float y, float z, float massKg) {
         uniform vec3 viewPos;
         uniform vec3 lightColor;
         uniform vec3 objectColor;
+        uniform bool isSun;
 
         void main() {
-            float ambientStrength = 0.1;
-            vec3 ambient = ambientStrength * lightColor;
+            if(isSun){
+                FragColor = vec4(objectColor, 1.0);
+            }else{
+                float ambientStrength = 0.1;
+                vec3 ambient = ambientStrength * lightColor;
 
-            vec3 norm = normalize(Normal);
-            vec3 lightDir = normalize(lightPos - FragPos);
-            float diff = max(dot(norm, lightDir), 0.0);
-            vec3 diffuse = diff * lightColor;
+                vec3 norm = normalize(Normal);
+                vec3 lightDir = normalize(lightPos - FragPos);
+                float diff = max(dot(norm, lightDir), 0.0);
+                vec3 diffuse = diff * lightColor;
 
-            float specularStrength = 0.5;
-            vec3 viewDir = normalize(viewPos - FragPos);
-            vec3 reflectDir = reflect(-lightDir, norm);
-            float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
-            vec3 specular = specularStrength * spec * lightColor;
+                float specularStrength = 0.5;
+                vec3 viewDir = normalize(viewPos - FragPos);
+                vec3 reflectDir = reflect(-lightDir, norm);
+                float spec = pow(max(dot(viewDir, reflectDir), 0.0), 32);
+                vec3 specular = specularStrength * spec * lightColor;
 
-            vec3 result = (ambient + diffuse + specular) * objectColor;
-            FragColor = vec4(result, 1.0);
+                vec3 result = (ambient + diffuse + specular) * objectColor;
+                FragColor = vec4(result, 1.0);
+            }
+            
         }
     )";
     pos = { x, y, z };
@@ -183,7 +189,7 @@ void Sphere::makeShaderProgram() {
     glDeleteShader(fragmentShader);
 }
 
-void Sphere::setupUniforms() {
+void Sphere::setupUniforms(bool isSun) {
     //Set up uniform values for model, view, projection matrices
     //Also lighting parameters.
     glm::mat4 model = glm::mat4(1.0f);
@@ -198,17 +204,15 @@ void Sphere::setupUniforms() {
     unsigned int colorLoc = glGetUniformLocation(shaderProgram, "objectColor");
     unsigned int lightPosLoc = glGetUniformLocation(shaderProgram, "lightPos");
     unsigned int lightColorLoc = glGetUniformLocation(shaderProgram, "lightColor");
-    
+    unsigned int isSunLoc = glGetUniformLocation(shaderProgram, "isSun");
 
 
     glUniformMatrix4fv(modelLoc, 1, GL_FALSE, glm::value_ptr(model));
     
-
     glUniform3f(colorLoc, color.r, color.g, color.b);
-
     glUniform3f(lightPosLoc, 0.0f, 0.0f, 0.0f);  // Position of the light source
-    
-    glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // White light
+    glUniform3f(lightColorLoc, 1.0f, 1.0f, 1.0f); // Make light white
+    glUniform1i(isSunLoc, isSun);
 }
 
 //Keeping this method in case I might use it in the future.

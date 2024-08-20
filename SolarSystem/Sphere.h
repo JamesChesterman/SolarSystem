@@ -30,7 +30,7 @@ public:
 	Sphere(float x = 0, float y = 0, float z = 0, float massKg = 0);
 	void generateSphere(std::vector<float>& vertices, std::vector<unsigned int>& indices, unsigned int latDivisions, unsigned int longDivisions, float radius);
 	void setupBuffers(const std::vector<float>& vertices, const std::vector<unsigned int>& indices);
-	void setupUniforms();
+	void setupUniforms(bool isSun = false);
 	void translate(float dx, float dy, float dz, float deltaTime);
 	//Getter methods are here to improve performance
 	unsigned int getShaderProgram() const { return shaderProgram; }

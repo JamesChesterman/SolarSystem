@@ -143,7 +143,7 @@ void Window::render() {
         camera.setCameraPos(cameraPos, sun);
 
         //All bodies:
-        sun.setupUniforms();
+        sun.setupUniforms(true);
         glBindVertexArray(sun.getVAO());
         glDrawElements(GL_TRIANGLES, indicesSun.size(), GL_UNSIGNED_INT, 0);
 
