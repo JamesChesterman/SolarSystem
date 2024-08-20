@@ -95,7 +95,7 @@ void Window::render() {
     std::vector<float> verticesSun;
     std::vector<unsigned int> indicesSun;
     //Sun's radius is 109x that of earth
-    sun.generateSphere(verticesSun, indicesSun, 20, 20, 10.9f);
+    sun.generateSphere(verticesSun, indicesSun, 50, 50, 10.9f);
     sun.setupBuffers(verticesSun, indicesSun);
 
     Satellite earth(0, 0, -75, 1);
@@ -103,7 +103,7 @@ void Window::render() {
     earth.setOrbitParams(Vector3 {0, 0, 0}, 75.0f, 1.0f);
     std::vector<float> verticesEarth;
     std::vector<unsigned int> indicesEarth;
-    earth.generateSphere(verticesEarth, indicesEarth, 20, 20, 1.0f);
+    earth.generateSphere(verticesEarth, indicesEarth, 20, 20, 3.0f);
     earth.setupBuffers(verticesEarth, indicesEarth);
 
     Satellite moon(0, 0, -85, 1);
@@ -111,7 +111,7 @@ void Window::render() {
     moon.setOrbitParams(earth.getPos(), 10, 2);
     std::vector<float> verticesMoon;
     std::vector<unsigned int> indicesMoon;
-    moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 0.5f);
+    moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 1.0f);
     moon.setupBuffers(verticesMoon, indicesMoon);
 
     Camera camera;
@@ -137,7 +137,7 @@ void Window::render() {
 
         //Rendering commands go here
 
-        glClearColor(0.3f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         camera.setCameraPos(cameraPos, sun);
