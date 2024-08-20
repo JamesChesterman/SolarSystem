@@ -39,6 +39,7 @@ void Sphere::setupBuffers(const std::vector<float>& vertices, const std::vector<
 
 Sphere::Sphere(float x, float y, float z, float massKg) {
     //Shader source code is AI Generated.
+    //Modified to include whether or not the object is the Sun.
     vertexShaderSource = R"(
         #version 330 core
         layout(location = 0) in vec3 aPos;

@@ -2,15 +2,26 @@
 #define CAMERA_H
 
 #include<GLFW/glfw3.h>
+#include <string>
 #include "Sphere.h"
+
+struct sphereCoords {
+	//Polar angle is from North (vertical)
+	//Azimuth angle is horizontal from x axis
+	float radius, polarAngle, azimuthAngle;
+};
 
 class Camera {
 private:
 	Vector3 pos;
+	sphereCoords posSphere;
+	const float speed = 0.1f;
+	const float angleSpeed = 0.001f;
 public:
 	Camera();
-	void setCameraPos(Vector3 newPos, Sphere sphere);
-
+	void update(Sphere& sphere);
+	void move(std::string direction);
+	Vector3 translatePos(sphereCoords coords);
 };
 
 #endif

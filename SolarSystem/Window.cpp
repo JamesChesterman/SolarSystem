@@ -46,7 +46,6 @@ Window::Window() {
     initGLFW();
     createWindow();
     initGLAD();
-    cameraPos = { 0,400,400 };
 
     glfwSetFramebufferSizeCallback(window, Window::framebuffer_size_callback);
     render();
@@ -64,22 +63,22 @@ void Window::processInput(GLFWwindow* window, float deltaTime) {
     }
 
     if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
-        cameraPos.y -= cameraSpeed * deltaTime;
+        camera.move("up");
     }
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
-        cameraPos.y += cameraSpeed * deltaTime;
+        camera.move("down");
     }
     if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        cameraPos.x -= cameraSpeed * deltaTime;
+        camera.move("left");
     }
     if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        cameraPos.x += cameraSpeed * deltaTime;
+        camera.move("right");
     }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
-        cameraPos.z += cameraSpeed * deltaTime;
+        camera.move("forward");
     }
     if (glfwGetKey(window, GLFW_KEY_E) == GLFW_PRESS) {
-        cameraPos.z -= cameraSpeed * deltaTime;
+        camera.move("backward");
     }
 
 }
@@ -114,8 +113,6 @@ void Window::render() {
     moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 1.0f);
     moon.setupBuffers(verticesMoon, indicesMoon);
 
-    Camera camera;
-
     glUseProgram(sun.getShaderProgram());
 
     glEnable(GL_DEPTH_TEST);
@@ -140,7 +137,7 @@ void Window::render() {
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        camera.setCameraPos(cameraPos, sun);
+        camera.update(sun);
 
         //All bodies:
         sun.setupUniforms(true);
