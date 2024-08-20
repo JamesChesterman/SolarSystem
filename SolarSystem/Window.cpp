@@ -46,7 +46,7 @@ Window::Window() {
     initGLFW();
     createWindow();
     initGLAD();
-    cameraPos = { 100,400,100 };
+    cameraPos = { 0,400,400 };
 
     glfwSetFramebufferSizeCallback(window, Window::framebuffer_size_callback);
     render();
