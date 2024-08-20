@@ -10,10 +10,15 @@
 #include "Window.h"
 #include "Sphere.h"
 
+#ifndef M+PI
+#define M_PI 3.14159265358979323846
+#endif
+
+
 Camera::Camera() {
-    pos = { 0,400,400 };
     //TODO Change this. Then have max and min values for angles
-    posSphere = { 400,0,0 };
+    posSphere = { 565,M_PI / 4,M_PI / 2};
+    pos = translatePos(posSphere);
 }
 
 void Camera::update(Sphere& sphere) {
@@ -36,6 +41,7 @@ void Camera::update(Sphere& sphere) {
 
 //Angles are in radians
 void Camera::move(std::string direction) {
+    
     if (direction == "up") {
         posSphere.polarAngle -= angleSpeed;
     }
