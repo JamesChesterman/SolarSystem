@@ -25,7 +25,7 @@ void Camera::update(Sphere& sphere) {
     glm::mat4 view = glm::lookAt(
         glm::vec3(pos.x, pos.y, pos.z),    //Camera pos
         glm::vec3(0.0f, 0.0f, 0.0f),    //Look at pos
-        glm::vec3(0.0f, 0.0f, -1.0f));  //Up direction
+        glm::vec3(0.0f, 1.0f, 0.0f));  //Up direction
 
     glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)Window::getWindowWidth() / (float)Window::getWindowHeight(), 0.1f, 2000.0f);
 
