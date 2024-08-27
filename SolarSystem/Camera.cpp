@@ -48,12 +48,6 @@ void Camera::move(std::string direction) {
     else if (direction == "down") {
         posSphere.polarAngle += angleSpeed;
     }
-    else if (direction == "right") {
-        posSphere.azimuthAngle += angleSpeed;
-    }
-    else if (direction == "left") {
-        posSphere.azimuthAngle -= angleSpeed;
-    }
     else if (direction == "forward") {
         posSphere.radius -= speed;
     }

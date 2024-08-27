@@ -68,12 +68,6 @@ void Window::processInput(GLFWwindow* window, float deltaTime) {
     if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
         camera.move("down");
     }
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
-        camera.move("left");
-    }
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
-        camera.move("right");
-    }
     if (glfwGetKey(window, GLFW_KEY_Q) == GLFW_PRESS) {
         camera.move("forward");
     }
