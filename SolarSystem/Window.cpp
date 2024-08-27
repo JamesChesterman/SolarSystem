@@ -91,28 +91,36 @@ void Window::render() {
     sun.generateSphere(verticesSun, indicesSun, 50, 50, 9);
     sun.setupBuffers(verticesSun, indicesSun);
 
-    Satellite mercury(0, 0, -11.58, 1);
+    Satellite mercury(0, 0, -19.3, 1);
     mercury.setColor(0.72f, 0.73f, 0.74f);
-    mercury.setOrbitParams(Vector3{ 0, 0, 0 }, 11.58, 4.0f);
+    mercury.setOrbitParams(Vector3{ 0, 0, 0 }, 19.3, 4.0f);
     std::vector<float> verticesMercury;
     std::vector<unsigned int> indicesMercury;
     mercury.generateSphere(verticesMercury, indicesMercury, 20, 20, 1.0f);
     mercury.setupBuffers(verticesMercury, indicesMercury);
 
-    Satellite earth(0, 0, -75, 1);
+    Satellite venus(0, 0, -36.06, 1);
+    venus.setColor(0.57f, 0.52f, 0.56f);
+    venus.setOrbitParams(Vector3{ 0, 0, 0 }, 36.06, 1.62f);
+    std::vector<float> verticesVenus;
+    std::vector<unsigned int> indicesVenus;
+    venus.generateSphere(verticesVenus, indicesVenus, 20, 20, 2.82f);
+    venus.setupBuffers(verticesVenus, indicesVenus);
+
+    Satellite earth(0, 0, -49.87, 1);
     earth.setColor(0, 0, 0.9f);
-    earth.setOrbitParams(Vector3 {0, 0, 0}, 75.0f, 1.0f);
+    earth.setOrbitParams(Vector3 {0, 0, 0}, 49.87, 1.0f);
     std::vector<float> verticesEarth;
     std::vector<unsigned int> indicesEarth;
     earth.generateSphere(verticesEarth, indicesEarth, 20, 20, 3.0f);
     earth.setupBuffers(verticesEarth, indicesEarth);
 
-    Satellite moon(0, 0, -85, 1);
+    Satellite moon(0, 0, -53.71, 1);
     moon.setColor(0.62f, 0.63f, 0.64f);
-    moon.setOrbitParams(earth.getPos(), 10, 2);
+    moon.setOrbitParams(earth.getPos(), 3.84, 13);
     std::vector<float> verticesMoon;
     std::vector<unsigned int> indicesMoon;
-    moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 1.0f);
+    moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 0.75f);
     moon.setupBuffers(verticesMoon, indicesMoon);
 
     glUseProgram(sun.getShaderProgram());
@@ -131,6 +139,7 @@ void Window::render() {
 
         //Bodies in Motion:
         mercury.updateOrbit(deltaTime);
+        venus.updateOrbit(deltaTime);
         earth.updateOrbit(deltaTime);
         moon.setCentrePos(earth.getPos());
         moon.updateOrbit(deltaTime);
@@ -150,6 +159,10 @@ void Window::render() {
         mercury.setupUniforms();
         glBindVertexArray(mercury.getVAO());
         glDrawElements(GL_TRIANGLES, indicesMercury.size(), GL_UNSIGNED_INT, 0);
+        
+        venus.setupUniforms();
+        glBindVertexArray(venus.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesVenus.size(), GL_UNSIGNED_INT, 0);
         
         earth.setupUniforms();
         glBindVertexArray(earth.getVAO());
