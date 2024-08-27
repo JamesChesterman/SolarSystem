@@ -94,8 +94,16 @@ void Window::render() {
     std::vector<float> verticesSun;
     std::vector<unsigned int> indicesSun;
     //Sun's radius is 109x that of earth
-    sun.generateSphere(verticesSun, indicesSun, 50, 50, 10.9f);
+    sun.generateSphere(verticesSun, indicesSun, 50, 50, 9);
     sun.setupBuffers(verticesSun, indicesSun);
+
+    Satellite mercury(0, 0, -11.58, 1);
+    mercury.setColor(0.72f, 0.73f, 0.74f);
+    mercury.setOrbitParams(Vector3{ 0, 0, 0 }, 11.58, 4.0f);
+    std::vector<float> verticesMercury;
+    std::vector<unsigned int> indicesMercury;
+    mercury.generateSphere(verticesMercury, indicesMercury, 20, 20, 1.0f);
+    mercury.setupBuffers(verticesMercury, indicesMercury);
 
     Satellite earth(0, 0, -75, 1);
     earth.setColor(0, 0, 0.9f);
@@ -106,7 +114,7 @@ void Window::render() {
     earth.setupBuffers(verticesEarth, indicesEarth);
 
     Satellite moon(0, 0, -85, 1);
-    moon.setColor(0, 0, 0);
+    moon.setColor(0.62f, 0.63f, 0.64f);
     moon.setOrbitParams(earth.getPos(), 10, 2);
     std::vector<float> verticesMoon;
     std::vector<unsigned int> indicesMoon;
@@ -128,6 +136,7 @@ void Window::render() {
         processInput(window, deltaTime);
 
         //Bodies in Motion:
+        mercury.updateOrbit(deltaTime);
         earth.updateOrbit(deltaTime);
         moon.setCentrePos(earth.getPos());
         moon.updateOrbit(deltaTime);
@@ -144,6 +153,10 @@ void Window::render() {
         glBindVertexArray(sun.getVAO());
         glDrawElements(GL_TRIANGLES, indicesSun.size(), GL_UNSIGNED_INT, 0);
 
+        mercury.setupUniforms();
+        glBindVertexArray(mercury.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesMercury.size(), GL_UNSIGNED_INT, 0);
+        
         earth.setupUniforms();
         glBindVertexArray(earth.getVAO());
         glDrawElements(GL_TRIANGLES, indicesEarth.size(), GL_UNSIGNED_INT, 0);

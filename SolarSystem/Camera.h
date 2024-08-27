@@ -15,8 +15,8 @@ class Camera {
 private:
 	Vector3 pos;
 	sphereCoords posSphere;
-	const float speed = 0.3f;
-	const float angleSpeed = 0.003f;
+	const float speed = 0.2f;
+	const float angleSpeed = 0.002f;
 public:
 	Camera();
 	void update(Sphere& sphere);
