@@ -123,6 +123,14 @@ void Window::render() {
     moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 0.75f);
     moon.setupBuffers(verticesMoon, indicesMoon);
 
+    Satellite mars(0, 0, -76, 1);
+    mars.setColor(0.63f, 0.14f, 0.1f);
+    mars.setOrbitParams(Vector3{ 0,0,0 }, 76, 0.53f);
+    std::vector<float> verticesMars;
+    std::vector<unsigned int> indicesMars;
+    mars.generateSphere(verticesMars, indicesMars, 20, 20, 1.6f);
+    mars.setupBuffers(verticesMars, indicesMars);
+
     glUseProgram(sun.getShaderProgram());
 
     glEnable(GL_DEPTH_TEST);
@@ -143,6 +151,7 @@ void Window::render() {
         earth.updateOrbit(deltaTime);
         moon.setCentrePos(earth.getPos());
         moon.updateOrbit(deltaTime);
+        mars.updateOrbit(deltaTime);
 
         //Rendering commands go here
 
@@ -171,6 +180,10 @@ void Window::render() {
         moon.setupUniforms();
         glBindVertexArray(moon.getVAO());
         glDrawElements(GL_TRIANGLES, indicesMoon.size(), GL_UNSIGNED_INT, 0);
+
+        mars.setupUniforms();
+        glBindVertexArray(mars.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesMars.size(), GL_UNSIGNED_INT, 0);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
