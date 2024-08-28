@@ -82,40 +82,41 @@ void Window::processInput(GLFWwindow* window, float deltaTime) {
 //Because otherwise their constructors will be called (in the header files)
 //So OpenGL will try to do the stuff in Sphere without having been initialised (here)
 void Window::render() {
+    int sunDiameter = 100;
     //Setup bodies:
     Sphere sun(0, 0, 0, 1);
     sun.setColor(1.0f, 0.65f, 0.0f);     //Orange
     std::vector<float> verticesSun;
     std::vector<unsigned int> indicesSun;
     //Sun's radius is 109x that of earth
-    sun.generateSphere(verticesSun, indicesSun, 50, 50, 9);
+    sun.generateSphere(verticesSun, indicesSun, 50, 50, sunDiameter);
     sun.setupBuffers(verticesSun, indicesSun);
 
-    Satellite mercury(0, 0, -19.3, 1);
+    Satellite mercury(0, 0, -19.3 - sunDiameter, 1);
     mercury.setColor(0.72f, 0.73f, 0.74f);
-    mercury.setOrbitParams(Vector3{ 0, 0, 0 }, 19.3, 4.15f);
+    mercury.setOrbitParams(Vector3{ 0, 0, 0 }, 19.3 + sunDiameter, 4.15f);
     std::vector<float> verticesMercury;
     std::vector<unsigned int> indicesMercury;
     mercury.generateSphere(verticesMercury, indicesMercury, 20, 20, 1.0f);
     mercury.setupBuffers(verticesMercury, indicesMercury);
 
-    Satellite venus(0, 0, -36.06, 1);
+    Satellite venus(0, 0, -36.06 - sunDiameter, 1);
     venus.setColor(0.57f, 0.52f, 0.56f);
-    venus.setOrbitParams(Vector3{ 0, 0, 0 }, 36.06, 1.62f);
+    venus.setOrbitParams(Vector3{ 0, 0, 0 }, 36.06 + sunDiameter, 1.62f);
     std::vector<float> verticesVenus;
     std::vector<unsigned int> indicesVenus;
     venus.generateSphere(verticesVenus, indicesVenus, 20, 20, 2.82f);
     venus.setupBuffers(verticesVenus, indicesVenus);
 
-    Satellite earth(0, 0, -49.87, 1);
+    Satellite earth(0, 0, -49.87 - sunDiameter, 1);
     earth.setColor(0, 0, 0.9f);
-    earth.setOrbitParams(Vector3 {0, 0, 0}, 49.87, 1.0f);
+    earth.setOrbitParams(Vector3 {0, 0, 0}, 49.87 + sunDiameter, 1.0f);
     std::vector<float> verticesEarth;
     std::vector<unsigned int> indicesEarth;
     earth.generateSphere(verticesEarth, indicesEarth, 20, 20, 3.0f);
     earth.setupBuffers(verticesEarth, indicesEarth);
 
-    Satellite moon(0, 0, -53.71, 1);
+    Satellite moon(0, 0, -53.71 - sunDiameter, 1);
     moon.setColor(0.62f, 0.63f, 0.64f);
     moon.setOrbitParams(earth.getPos(), 3.84, 13);
     std::vector<float> verticesMoon;
@@ -123,29 +124,38 @@ void Window::render() {
     moon.generateSphere(verticesMoon, indicesMoon, 20, 20, 0.75f);
     moon.setupBuffers(verticesMoon, indicesMoon);
 
-    Satellite mars(0, 0, -76, 1);
+    Satellite mars(0, 0, -76 - sunDiameter, 1);
     mars.setColor(0.63f, 0.14f, 0.1f);
-    mars.setOrbitParams(Vector3{ 0,0,0 }, 76, 0.53f);
+    mars.setOrbitParams(Vector3{ 0,0,0 }, 76 + sunDiameter, 0.53f);
     std::vector<float> verticesMars;
     std::vector<unsigned int> indicesMars;
     mars.generateSphere(verticesMars, indicesMars, 20, 20, 1.6f);
     mars.setupBuffers(verticesMars, indicesMars);
 
-    Satellite jupiter(0, 0, -259, 1);
+    Satellite jupiter(0, 0, -259 - sunDiameter, 1);
     jupiter.setColor(0.79f, 0.56f, 0.22f);
-    jupiter.setOrbitParams(Vector3{ 0, 0, 0 }, 259, 0.084f);
+    jupiter.setOrbitParams(Vector3{ 0, 0, 0 }, 259 + sunDiameter, 0.084f);
     std::vector<float> verticesJupiter;
     std::vector<unsigned int> indicesJupiter;
     jupiter.generateSphere(verticesJupiter, indicesJupiter, 40, 40, 32.87f);
     jupiter.setupBuffers(verticesJupiter, indicesJupiter);
 
-    Satellite saturn(0, 0, -475.6f, 1);
+    Satellite saturn(0, 0, -475.6f - sunDiameter, 1);
     saturn.setColor(0.77f, 0.69f, 0.55f);
-    saturn.setOrbitParams(Vector3{ 0, 0, 0 }, 475.6, 0.034f);
+    saturn.setOrbitParams(Vector3{ 0, 0, 0 }, 475.6 + sunDiameter, 0.034f);
     std::vector<float> verticesSaturn;
     std::vector<unsigned int> indicesSaturn;
     saturn.generateSphere(verticesSaturn, indicesSaturn, 40, 40, 28.33f);
     saturn.setupBuffers(verticesSaturn, indicesSaturn);
+
+    Satellite uranus(0, 0, -957 - sunDiameter, 1);
+    uranus.setColor(0.78f, 0.83f, 0.89f);
+    uranus.setOrbitParams(Vector3{ 0,0,0 }, 957 + sunDiameter, 0.012f);
+    std::vector<float> verticesUranus;
+    std::vector<unsigned int> indicesUranus;
+    uranus.generateSphere(verticesUranus, indicesUranus, 20, 20, 7.47f);
+    uranus.setupBuffers(verticesUranus, indicesUranus);
+
 
 
     glUseProgram(sun.getShaderProgram());
@@ -171,6 +181,7 @@ void Window::render() {
         mars.updateOrbit(deltaTime);
         jupiter.updateOrbit(deltaTime);
         saturn.updateOrbit(deltaTime);
+        uranus.updateOrbit(deltaTime);
 
         //Rendering commands go here
 
@@ -211,6 +222,10 @@ void Window::render() {
         saturn.setupUniforms();
         glBindVertexArray(saturn.getVAO());
         glDrawElements(GL_TRIANGLES, indicesSaturn.size(), GL_UNSIGNED_INT, 0);
+
+        uranus.setupUniforms();
+        glBindVertexArray(uranus.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesUranus.size(), GL_UNSIGNED_INT, 0);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
