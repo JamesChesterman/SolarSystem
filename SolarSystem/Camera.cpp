@@ -17,7 +17,7 @@
 
 Camera::Camera() {
     //TODO Change this. Then have max and min values for angles
-    posSphere = { 565,M_PI / 4,M_PI / 2};
+    posSphere = { 1000,M_PI / 4,M_PI / 2};
     pos = translatePos(posSphere);
 }
 
@@ -27,7 +27,7 @@ void Camera::update(Sphere& sphere) {
         glm::vec3(0.0f, 0.0f, 0.0f),    //Look at pos
         glm::vec3(0.0f, 1.0f, 0.0f));  //Up direction
 
-    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)Window::getWindowWidth() / (float)Window::getWindowHeight(), 0.1f, 2000.0f);
+    glm::mat4 projection = glm::perspective(glm::radians(45.0f), (float)Window::getWindowWidth() / (float)Window::getWindowHeight(), 0.1f, 5000.0f);
 
     unsigned int shaderProgram = sphere.getShaderProgram();
     unsigned int viewLoc = glGetUniformLocation(shaderProgram, "view");

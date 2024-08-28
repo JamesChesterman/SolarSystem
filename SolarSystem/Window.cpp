@@ -139,6 +139,14 @@ void Window::render() {
     jupiter.generateSphere(verticesJupiter, indicesJupiter, 40, 40, 32.87f);
     jupiter.setupBuffers(verticesJupiter, indicesJupiter);
 
+    Satellite saturn(0, 0, -475.6f, 1);
+    saturn.setColor(0.77f, 0.69f, 0.55f);
+    saturn.setOrbitParams(Vector3{ 0, 0, 0 }, 475.6, 0.034f);
+    std::vector<float> verticesSaturn;
+    std::vector<unsigned int> indicesSaturn;
+    saturn.generateSphere(verticesSaturn, indicesSaturn, 40, 40, 28.33f);
+    saturn.setupBuffers(verticesSaturn, indicesSaturn);
+
 
     glUseProgram(sun.getShaderProgram());
 
@@ -162,6 +170,7 @@ void Window::render() {
         moon.updateOrbit(deltaTime);
         mars.updateOrbit(deltaTime);
         jupiter.updateOrbit(deltaTime);
+        saturn.updateOrbit(deltaTime);
 
         //Rendering commands go here
 
@@ -198,6 +207,10 @@ void Window::render() {
         jupiter.setupUniforms();
         glBindVertexArray(jupiter.getVAO());
         glDrawElements(GL_TRIANGLES, indicesJupiter.size(), GL_UNSIGNED_INT, 0);
+
+        saturn.setupUniforms();
+        glBindVertexArray(saturn.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesSaturn.size(), GL_UNSIGNED_INT, 0);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
