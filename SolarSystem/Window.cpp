@@ -149,12 +149,20 @@ void Window::render() {
     saturn.setupBuffers(verticesSaturn, indicesSaturn);
 
     Satellite uranus(0, 0, -957 - sunDiameter, 1);
-    uranus.setColor(0.78f, 0.83f, 0.89f);
+    uranus.setColor(0.82f, 0.9f, 0.9f);
     uranus.setOrbitParams(Vector3{ 0,0,0 }, 957 + sunDiameter, 0.012f);
     std::vector<float> verticesUranus;
     std::vector<unsigned int> indicesUranus;
     uranus.generateSphere(verticesUranus, indicesUranus, 20, 20, 7.47f);
     uranus.setupBuffers(verticesUranus, indicesUranus);
+
+    Satellite neptune(0, 0, -1499 - sunDiameter, 1);
+    neptune.setColor(0.15f, 0.27f, 0.53f);
+    neptune.setOrbitParams(Vector3{ 0,0,0 }, 1499 + sunDiameter, 0.006f);
+    std::vector<float> verticesNeptune;
+    std::vector<unsigned int> indicesNeptune;
+    neptune.generateSphere(verticesNeptune, indicesNeptune, 20, 20, 11.6f);
+    neptune.setupBuffers(verticesNeptune, indicesNeptune);
 
 
 
@@ -182,6 +190,7 @@ void Window::render() {
         jupiter.updateOrbit(deltaTime);
         saturn.updateOrbit(deltaTime);
         uranus.updateOrbit(deltaTime);
+        neptune.updateOrbit(deltaTime);
 
         //Rendering commands go here
 
@@ -226,6 +235,10 @@ void Window::render() {
         uranus.setupUniforms();
         glBindVertexArray(uranus.getVAO());
         glDrawElements(GL_TRIANGLES, indicesUranus.size(), GL_UNSIGNED_INT, 0);
+
+        neptune.setupUniforms();
+        glBindVertexArray(neptune.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesNeptune.size(), GL_UNSIGNED_INT, 0);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
