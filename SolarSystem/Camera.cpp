@@ -43,10 +43,10 @@ void Camera::update(Sphere& sphere) {
 void Camera::move(std::string direction) {
     
     if (direction == "up") {
-        posSphere.polarAngle -= angleSpeed;
+        posSphere.polarAngle += angleSpeed;
     }
     else if (direction == "down") {
-        posSphere.polarAngle += angleSpeed;
+        posSphere.polarAngle -= angleSpeed;
     }
     else if (direction == "forward") {
         posSphere.radius -= speed;
