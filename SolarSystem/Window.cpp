@@ -93,7 +93,7 @@ void Window::render() {
 
     Satellite mercury(0, 0, -19.3, 1);
     mercury.setColor(0.72f, 0.73f, 0.74f);
-    mercury.setOrbitParams(Vector3{ 0, 0, 0 }, 19.3, 4.0f);
+    mercury.setOrbitParams(Vector3{ 0, 0, 0 }, 19.3, 4.15f);
     std::vector<float> verticesMercury;
     std::vector<unsigned int> indicesMercury;
     mercury.generateSphere(verticesMercury, indicesMercury, 20, 20, 1.0f);
@@ -131,7 +131,13 @@ void Window::render() {
     mars.generateSphere(verticesMars, indicesMars, 20, 20, 1.6f);
     mars.setupBuffers(verticesMars, indicesMars);
 
-    
+    Satellite jupiter(0, 0, -259, 1);
+    jupiter.setColor(0.79f, 0.56f, 0.22f);
+    jupiter.setOrbitParams(Vector3{ 0, 0, 0 }, 259, 0.084f);
+    std::vector<float> verticesJupiter;
+    std::vector<unsigned int> indicesJupiter;
+    jupiter.generateSphere(verticesJupiter, indicesJupiter, 40, 40, 32.87f);
+    jupiter.setupBuffers(verticesJupiter, indicesJupiter);
 
 
     glUseProgram(sun.getShaderProgram());
@@ -155,6 +161,7 @@ void Window::render() {
         moon.setCentrePos(earth.getPos());
         moon.updateOrbit(deltaTime);
         mars.updateOrbit(deltaTime);
+        jupiter.updateOrbit(deltaTime);
 
         //Rendering commands go here
 
@@ -187,6 +194,10 @@ void Window::render() {
         mars.setupUniforms();
         glBindVertexArray(mars.getVAO());
         glDrawElements(GL_TRIANGLES, indicesMars.size(), GL_UNSIGNED_INT, 0);
+
+        jupiter.setupUniforms();
+        glBindVertexArray(jupiter.getVAO());
+        glDrawElements(GL_TRIANGLES, indicesJupiter.size(), GL_UNSIGNED_INT, 0);
 
         //Double buffering used to load next series of pixels whilst drawing current pixels
         glfwSwapBuffers(window);
